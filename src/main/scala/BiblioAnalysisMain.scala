@@ -2,6 +2,10 @@ import scala.io.Source
 
 object BiblioAnalysisMain extends App {
 
+  def getAuthors(authorData: String) : String = {
+    authorData.substring(3)
+  }
+
   case class Pub(var authors: String, var title: String, var publication: String)
 
   println("Contents")
@@ -12,16 +16,30 @@ object BiblioAnalysisMain extends App {
 
   src.mkString split("PT J\n") foreach {x => {
     println("**********")
+    var authors : String = null
+    var title : String = null
+    var publication : String = null
 
+    val lines = x split ("\n")
+    lines foreach { l => {
+      var currentCode : String = ""
+      var code : String = ""
+      if (l.length >= 2)
+        code = l.substring(0,2)
+        code match {
+          case "AF" => {authors = getAuthors(l);currentCode="AF"}
+          case "TI" =>
+          case _ => {
+            if (currentCode == "AF") authors = authors + l
+          }
+          }
+
+        }
+
+    }}
     count = count+1
-    println(x)
-  }}
-/*
-  src.getLines() foreach {x => {
-    //println(x)
-    if (x.startsWith("PT")) count= count+1
-  }}
-*/
+  }
+
   println("Number of records is " + count)
 
 }
