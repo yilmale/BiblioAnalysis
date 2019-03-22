@@ -27,7 +27,7 @@ object BiblioAnalysisMain extends App {
       if (l.length >= 2)
         code = l.substring(0,2)
         code match {
-          case "AF" => {authors = getAuthors(l);currentCode="AF"}
+          case "AF" => {authors = getAuthors(l); println(authors);currentCode="AF"}
           case "TI" =>
           case _ => {
             if (currentCode == "AF") authors = authors + l
