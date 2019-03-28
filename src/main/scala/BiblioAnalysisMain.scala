@@ -6,6 +6,16 @@ object BiblioAnalysisMain extends App {
     authorData.substring(3)
   }
 
+  def getTitle(article: String) : String = {
+    article.substring(3)
+  }
+
+  def getSource(source: String) : String = {
+    source.substring(3)
+  }
+
+
+
   case class Pub(var authors: String, var title: String, var publication: String)
 
   println("Contents")
@@ -18,25 +28,35 @@ object BiblioAnalysisMain extends App {
     println("**********")
     var authors : String = null
     var title : String = null
-    var publication : String = null
+    var src : String = null
 
     val lines = x split ("\n")
+    var currentCode : String = ""
+    var code : String = ""
     lines foreach { l => {
-      var currentCode : String = ""
-      var code : String = ""
       if (l.length >= 2)
         code = l.substring(0,2)
         code match {
-          case "AF" => {authors = getAuthors(l); println(authors);currentCode="AF"}
-          case "TI" =>
-          case _ => {
-            if (currentCode == "AF") authors = authors + l
+          case "AF" => {authors = getAuthors(l);currentCode="AF"}
+          case "TI" => {title = getTitle(l);currentCode="TI"}
+          case "SO" => {src = getSource(l);currentCode="SO"}
+          case "  " => {
+            if (currentCode == "AF") authors = authors + "\n" + l.stripLeading()
+            else
+            if (currentCode == "TI") title = title + " " + l.stripLeading()
+            else
+            if (currentCode == "SO") src = src + " " + l.stripLeading()
           }
+          case _ => currentCode = code
           }
 
         }
 
-    }}
+    }
+    println(authors)
+    println(title)
+    println(src)
+  }
     count = count+1
   }
 
