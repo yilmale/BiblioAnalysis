@@ -14,6 +14,10 @@ object BiblioAnalysisMain extends App {
     source.substring(3)
   }
 
+  def getKeywords(kwds: String) : Array[String] = {
+    kwds.split(";") map(_.stripLeading())
+  }
+
 
 
   case class Pub(var authors: String, var title: String, var publication: String)
@@ -29,6 +33,7 @@ object BiblioAnalysisMain extends App {
     var authors : String = null
     var title : String = null
     var src : String = null
+    var keywords: Array[String] = null
 
     val lines = x split ("\n")
     var currentCode : String = ""
@@ -40,6 +45,7 @@ object BiblioAnalysisMain extends App {
           case "AF" => {authors = getAuthors(l);currentCode="AF"}
           case "TI" => {title = getTitle(l);currentCode="TI"}
           case "SO" => {src = getSource(l);currentCode="SO"}
+          case "DE" =>
           case "  " => {
             if (currentCode == "AF") authors = authors + "\n" + l.stripLeading()
             else
