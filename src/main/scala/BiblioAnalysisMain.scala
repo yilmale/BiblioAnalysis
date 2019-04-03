@@ -41,8 +41,9 @@ object BiblioAnalysisMain extends App {
   case class Pub(var authors: String, var title: String, var publication: String,
                  var keywords: Array[String], var refs: List[Ref]) {
     override def toString(): String = {
-      var str = s"Authors: $authors \n Title: $title \n Source: $publication"
-      if (keywords != null) {keywords foreach {x => {str=str+s"$x\t\t"}}}
+      var str = s"Authors: $authors \n Title: $title \n Source: $publication\n"
+      str =str+s"Keywords: "
+      if (keywords != null) {keywords foreach {x => {str=str+s"$x\t"}}}
       var count = refs.length
       str=str+s"\nThere are $count references"
       str
@@ -62,8 +63,6 @@ object BiblioAnalysisMain extends App {
   var references : List[Ref] = List()
 
   srcData.mkString split("PT J\n") foreach {x => {
-    println("**********")
-
     val lines = x split ("\n")
     var currentCode : String = ""
     var code : String = ""
@@ -86,22 +85,18 @@ object BiblioAnalysisMain extends App {
           case _ => currentCode = code
           }
         }
-
     }
-    println(authors)
-    println(title)
-    println(src)
-    if (keywords != null) {keywords foreach {x => {(print(x)); print("\t\t")}}}
-    println()
-    println("There are "  + references.length + " references")
-    println()
-
   }
     pubs = Pub(authors,title,src,keywords,references) :: pubs
     count = count+1
+    authors = null
+    title = null
+    src = null
+    keywords = null
+    references  = List()
   }
 
   println("Number of records is " + count)
-  pubs foreach {p => println(p)}
+  pubs foreach {p => {println(p);println("**********")}}
 
 }
