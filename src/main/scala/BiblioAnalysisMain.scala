@@ -36,6 +36,13 @@ object BiblioAnalysisMain extends App {
     Ref(au,date,src)
   }
 
+  def reverse(lst: List[Pub]) : List[Pub] = {
+    lst match {
+      case List() => lst
+      case x :: xs1 => reverse(xs1) ::: List(x)
+    }
+  }
+
 
 
   case class Pub(var authors: String, var title: String, var publication: String,
@@ -97,6 +104,6 @@ object BiblioAnalysisMain extends App {
   }
 
   println("Number of records is " + count)
-  pubs foreach {p => {println(p);println("**********")}}
+  reverse(pubs).tail foreach {p => {println(p);println("**********")}}
 
 }
